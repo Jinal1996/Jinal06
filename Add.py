@@ -1,76 +1,44 @@
 import streamlit as st
-import time
 import random
+import pyperclip  # For copying to clipboard
 
-# Inspirational quotes
-quotes = [
-    "“The mind is everything. What you think you become.” – Buddha",
-    "“Peace comes from within. Do not seek it without.” – Buddha",
-    "“Be happy in the moment, that's enough. Each moment is all we need, not more.” – Mother Teresa",
-    "“The journey of a thousand miles begins with one step.” – Lao Tzu",
-    "“Smile, breathe, and go slowly.” – Thich Nhat Hanh",
+# Local database of jokes
+jokes = [
+    "Why don’t skeletons fight each other? Because they don’t have the guts. 😂",
+    "Why did the scarecrow win an award? Because he was outstanding in his field. 🌾",
+    "What do you call fake spaghetti? An impasta. 🍝",
+    "I told my wife she was drawing her eyebrows too high. She looked surprised. 😲",
+    "Why don’t eggs tell jokes? They’d crack each other up. 🥚",
+    "Why did the golfer bring two pairs of pants? In case he got a hole in one. 🏌️‍♂️",
 ]
-
-# Background music options
-music_links = {
-    "Nature Sounds 🌿": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-    "Ocean Waves 🌊": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
-    "Relaxing Piano 🎹": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
-}
 
 # Title and subtitle
 st.markdown(
-    "<h1 style='text-align: center; color: darkblue;'>🧘‍♀️ Mindfulness Timer 🕰️</h1>",
+    "<h1 style='text-align: center; color: purple;'>😂 Joke Generator 🎉</h1>",
     unsafe_allow_html=True,
 )
 st.markdown(
-    "<h3 style='text-align: center; color: teal;'>Take a moment to relax and focus.</h3>",
+    "<h3 style='text-align: center; color: darkblue;'>Click the button below to brighten your day!</h3>",
     unsafe_allow_html=True,
 )
 
-# Sidebar for timer duration and music
-st.sidebar.markdown("<h2 style='color: purple;'>Customize Your Session</h2>", unsafe_allow_html=True)
-duration = st.sidebar.slider("Select duration (minutes):", 1, 10, 5)
-music = st.sidebar.selectbox("Choose background music:", list(music_links.keys()))
-
-# Button to start the timer
-if st.sidebar.button("Start Mindfulness Timer 🕉️"):
-    # Show a soothing animation
-    with st.spinner("Relax and focus..."):
-        for i in range(duration * 60, 0, -1):
-            minutes, seconds = divmod(i, 60)
-            st.markdown(
-                f"<h2 style='text-align: center; color: green;'>Time Left: {minutes:02}:{seconds:02}</h2>",
-                unsafe_allow_html=True,
-            )
-            time.sleep(1)
-            st.empty()  # Clear the previous timer text
-
-    # Display an inspirational quote after the timer
-    quote = random.choice(quotes)
+# Button to generate a joke
+if st.button("Get a Joke! 🎈"):
+    # Randomly select a joke
+    joke = random.choice(jokes)
     st.markdown(
         f"""
-        <h2 style='text-align: center; color: gold;'>✨ Session Complete! ✨</h2>
-        <p style='text-align: center; color: darkgreen; font-size: 20px;'>{quote}</p>
-        """,
-        unsafe_allow_html=True,
-    )
-    # Embed background music
-    st.markdown(
-        f"""
-        <audio controls autoplay>
-          <source src="{music_links[music]}" type="audio/mpeg">
-          Your browser does not support the audio element.
-        </audio>
+        <h2 style='text-align: center; color: darkgreen;'>Here's your joke:</h2>
+        <p style='text-align: center; font-size: 20px; color: teal;'>{joke}</p>
         """,
         unsafe_allow_html=True,
     )
 
-# Footer
-st.markdown(
-    "<h4 style='text-align: center; color: gray;'>💡 Relax, refresh, and come back stronger!</h4>",
-    unsafe_allow_html=True,
-)
+    # Copy to clipboard button
+    if st.button("Copy Joke to Clipboard ✂️"):
+        pyperclip.copy(joke)
+        st.success("Joke copied to
+
 
 
 
