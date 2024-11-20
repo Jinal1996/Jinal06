@@ -1,48 +1,79 @@
 import streamlit as st
+import time
 import random
 
-# Title and subtitle with emojis for fun
-st.markdown("<h1 style='text-align: center; color: crimson;'>💖 Love Life Calculator 💖</h1>", unsafe_allow_html=True)
-st.markdown("<h3 style='text-align: center; color: darkviolet;'>Find out your compatibility score with some fun preferences!</h3>", unsafe_allow_html=True)
+# Inspirational quotes
+quotes = [
+    "“The mind is everything. What you think you become.” – Buddha",
+    "“Peace comes from within. Do not seek it without.” – Buddha",
+    "“Be happy in the moment, that's enough. Each moment is all we need, not more.” – Mother Teresa",
+    "“The journey of a thousand miles begins with one step.” – Lao Tzu",
+    "“Smile, breathe, and go slowly.” – Thich Nhat Hanh",
+]
 
-# Sidebar for partner names input
-st.sidebar.markdown("<h2 style='color: indigo;'>Enter Partner Details</h2>", unsafe_allow_html=True)
+# Background music options
+music_links = {
+    "Nature Sounds 🌿": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+    "Ocean Waves 🌊": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+    "Relaxing Piano 🎹": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+}
 
-# Getting user input for partner names
-partner1 = st.sidebar.text_input("Enter the first partner's name:")
-partner2 = st.sidebar.text_input("Enter the second partner's name:")
+# Title and subtitle
+st.markdown(
+    "<h1 style='text-align: center; color: darkblue;'>🧘‍♀️ Mindfulness Timer 🕰️</h1>",
+    unsafe_allow_html=True,
+)
+st.markdown(
+    "<h3 style='text-align: center; color: teal;'>Take a moment to relax and focus.</h3>",
+    unsafe_allow_html=True,
+)
 
-# Preferences input
-st.sidebar.markdown("<h3 style='color: darkorange;'>Choose Your Favorite!</h3>", unsafe_allow_html=True)
-options = ["Beach 🏖️", "Mountain 🏔️", "Sun ☀️", "Rain 🌧️", "Snow ❄️"]
-preference1 = st.sidebar.selectbox(f"What does {partner1} like?", options, key="p1")
-preference2 = st.sidebar.selectbox(f"What does {partner2} like?", options, key="p2")
+# Sidebar for timer duration and music
+st.sidebar.markdown("<h2 style='color: purple;'>Customize Your Session</h2>", unsafe_allow_html=True)
+duration = st.sidebar.slider("Select duration (minutes):", 1, 10, 5)
+music = st.sidebar.selectbox("Choose background music:", list(music_links.keys()))
 
-# Button to calculate the compatibility score
-if st.sidebar.button("Calculate Love Score 💕"):
-    if partner1.strip() and partner2.strip():  # Ensure names are not empty
-        # Compatibility logic based on preferences
-        compatibility_boost = 10 if preference1 == preference2 else 0
-        base_love_score = random.randint(50, 90)
-        love_score = base_love_score + compatibility_boost
+# Button to start the timer
+if st.sidebar.button("Start Mindfulness Timer 🕉️"):
+    st.markdown(f"""
+        <h3 style='text-align: center; color: teal;'>Your session has started! Focus and relax. 🌟</h3>
+        <audio autoplay loop>
+          <source src="{music_links[music]}" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
+        """, unsafe_allow_html=True)
 
-        # Display compatibility result
+    # Timer loop
+    st.markdown("<h3 style='text-align: center; color: darkgreen;'>Meditation Timer:</h3>", unsafe_allow_html=True)
+    for i in range(duration * 60, 0, -1):
+        minutes, seconds = divmod(i, 60)
         st.markdown(
             f"""
-            <h2 style='text-align: center; color: hotpink;'>💘 {partner1} & {partner2}'s Love Score 💘</h2>
-            <h1 style='text-align: center; color: limegreen;'>{love_score}%</h1>
-            <p style='text-align: center; font-size: 18px; color: goldenrod;'> 
-            {partner1} loves {preference1} and {partner2} loves {preference2}. 
-            {'Great match! ❤️' if compatibility_boost else 'Opposites attract! 💕'}
-            </p>
+            <div style='text-align: center; font-size: 50px; color: green;'>
+                {minutes:02}:{seconds:02}
+            </div>
             """,
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
-    else:
-        st.markdown("<h2 style='text-align: center; color: red;'>❗ Please enter both names and preferences to calculate the score.</h2>", unsafe_allow_html=True)
+        time.sleep(1)
+        st.empty()  # Clear the previous timer text
 
-# Add a fun footer
-st.markdown("<h4 style='text-align: center; color: gray;'>Made with 💖 by the Love Calculator Team</h4>", unsafe_allow_html=True)
+    # End of session
+    quote = random.choice(quotes)
+    st.markdown(
+        f"""
+        <h2 style='text-align: center; color: gold;'>✨ Session Complete! ✨</h2>
+        <p style='text-align: center; color: darkgreen; font-size: 20px;'>{quote}</p>
+        """,
+        unsafe_allow_html=True,
+    )
+
+# Footer
+st.markdown(
+    "<h4 style='text-align: center; color: gray;'>💡 Relax, refresh, and come back stronger!</h4>",
+    unsafe_allow_html=True,
+)
+
 
 
 
