@@ -1,6 +1,5 @@
 import streamlit as st
 import random
-import pyperclip  # For copying to clipboard
 
 # Local database of jokes
 jokes = [
@@ -34,10 +33,16 @@ if st.button("Get a Joke! 🎈"):
         unsafe_allow_html=True,
     )
 
-    # Copy to clipboard button
-    if st.button("Copy Joke to Clipboard ✂️"):
-        pyperclip.copy(joke)
-        st.success("Joke copied to
+    # Copy joke to clipboard feature with Streamlit's text display
+    st.text("Copy your joke below:")
+    st.code(joke, language="")
+
+# Footer
+st.markdown(
+    "<h4 style='text-align: center; color: gray;'>💡 Made to make you smile!</h4>",
+    unsafe_allow_html=True,
+)
+
 
 
 
