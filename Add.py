@@ -1,46 +1,96 @@
 import streamlit as st
 import random
 
-# Title and subtitle with emojis for fun
-st.markdown("<h1 style='text-align: center; color: crimson;'>💖 Love Life Calculator 💖</h1>", unsafe_allow_html=True)
-st.markdown("<h3 style='text-align: center; color: darkviolet;'>Find out your compatibility score with some fun preferences!</h3>", unsafe_allow_html=True)
+# Vacation data: Pre-defined destinations with categories
+destinations = [
+    {
+        "name": "Maldives",
+        "category": "Beach",
+        "weather": "Warm",
+        "budget": "High",
+        "image": "https://www.tourism.gov.mv/images/hero.jpg",
+        "description": "Crystal-clear waters, white sandy beaches, and luxury resorts await you in the Maldives! 🏝️",
+    },
+    {
+        "name": "Swiss Alps",
+        "category": "Mountains",
+        "weather": "Cold",
+        "budget": "High",
+        "image": "https://upload.wikimedia.org/wikipedia/commons/8/88/Swiss_Alps_%28pixinn.net%29.jpg",
+        "description": "Experience breathtaking views, skiing, and cozy chalets in the Swiss Alps! 🏔️",
+    },
+    {
+        "name": "Tokyo",
+        "category": "City",
+        "weather": "Mild",
+        "budget": "Medium",
+        "image": "https://upload.wikimedia.org/wikipedia/commons/0/0c/Tokyo_Skyline.jpg",
+        "description": "Dive into the bustling energy of Tokyo, with neon lights, culture, and sushi! 🏙️",
+    },
+    {
+        "name": "Bali",
+        "category": "Beach",
+        "weather": "Warm",
+        "budget": "Medium",
+        "image": "https://upload.wikimedia.org/wikipedia/commons/a/a2/Bali_Hindu_temple.jpg",
+        "description": "Relax at beautiful beaches, explore temples, and enjoy tropical vibes in Bali! 🌴",
+    },
+    {
+        "name": "Banff",
+        "category": "Mountains",
+        "weather": "Cold",
+        "budget": "Medium",
+        "image": "https://upload.wikimedia.org/wikipedia/commons/1/1e/Banff_Lake.jpg",
+        "description": "Discover turquoise lakes and rugged peaks in Banff National Park! ❄️",
+    },
+]
 
-# Sidebar for partner names input
-st.sidebar.markdown("<h2 style='color: indigo;'>Enter Partner Details</h2>", unsafe_allow_html=True)
+# Title and subtitle
+st.markdown(
+    "<h1 style='text-align: center; color: darkblue;'>🌍 Dream Vacation Generator 🧳</h1>",
+    unsafe_allow_html=True,
+)
+st.markdown(
+    "<h3 style='text-align: center; color: teal;'>Select your preferences and find your perfect getaway!</h3>",
+    unsafe_allow_html=True,
+)
 
-# Getting user input for partner names
-partner1 = st.sidebar.text_input("Enter the first partner's name:")
-partner2 = st.sidebar.text_input("Enter the second partner's name:")
+# Sidebar for preferences
+st.sidebar.markdown("<h2 style='color: purple;'>Your Preferences</h2>", unsafe_allow_html=True)
 
-# Preferences input
-st.sidebar.markdown("<h3 style='color: darkorange;'>Choose Your Favorite!</h3>", unsafe_allow_html=True)
-options = ["Beach 🏖️", "Mountain 🏔️", "Sun ☀️", "Rain 🌧️", "Snow ❄️"]
-preference1 = st.sidebar.selectbox(f"What does {partner1} like?", options, key="p1")
-preference2 = st.sidebar.selectbox(f"What does {partner2} like?", options, key="p2")
+# Dropdown for preferences
+category = st.sidebar.selectbox("What type of place do you like?", ["Beach", "Mountains", "City"])
+weather = st.sidebar.selectbox("Preferred weather?", ["Warm", "Cold", "Mild"])
+budget = st.sidebar.selectbox("Your budget?", ["High", "Medium"])
 
-# Button to calculate the compatibility score
-if st.sidebar.button("Calculate Love Score 💕"):
-    if partner1.strip() and partner2.strip():  # Ensure names are not empty
-        # Compatibility logic based on preferences
-        compatibility_boost = 10 if preference1 == preference2 else 0
-        base_love_score = random.randint(50, 90)
-        love_score = base_love_score + compatibility_boost
+# Button to generate a vacation
+if st.sidebar.button("Find My Vacation! ✈️"):
+    # Filter destinations based on preferences
+    filtered_destinations = [
+        d for d in destinations if d["category"] == category and d["weather"] == weather and d["budget"] == budget
+    ]
 
-        # Display compatibility result
+    if filtered_destinations:
+        # Randomly select a destination
+        vacation = random.choice(filtered_destinations)
         st.markdown(
             f"""
-            <h2 style='text-align: center; color: hotpink;'>💘 {partner1} & {partner2}'s Love Score 💘</h2>
-            <h1 style='text-align: center; color: limegreen;'>{love_score}%</h1>
-            <p style='text-align: center; font-size: 18px; color: goldenrod;'> 
-            {partner1} loves {preference1} and {partner2} loves {preference2}. 
-            {'Great match! ❤️' if compatibility_boost else 'Opposites attract! 💕'}
-            </p>
+            <h2 style='text-align: center; color: gold;'>✨ Your Dream Vacation: {vacation['name']} ✨</h2>
+            <p style='text-align: center; color: darkgreen;'>{vacation['description']}</p>
+            <img src="{vacation['image']}" style='display: block; margin: 0 auto; width: 80%; border-radius: 10px;'>
             """,
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
     else:
-        st.markdown("<h2 style='text-align: center; color: red;'>❗ Please enter both names and preferences to calculate the score.</h2>", unsafe_allow_html=True)
+        st.markdown(
+            "<h2 style='text-align: center; color: red;'>Sorry! No destinations match your preferences. Try changing your options. 🙁</h2>",
+            unsafe_allow_html=True,
+        )
 
-# Add a fun footer
-st.markdown("<h4 style='text-align: center; color: gray;'>Made with 💖 by the Love Calculator Team</h4>", unsafe_allow_html=True)
+# Footer
+st.markdown(
+    "<h4 style='text-align: center; color: gray;'>💡 Made with Streamlit for your next adventure!</h4>",
+    unsafe_allow_html=True,
+)
+
 
