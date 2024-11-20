@@ -1,5 +1,6 @@
 import streamlit as st
 import time
+import random  # Ensure the random module is imported
 import pandas as pd
 
 # Inspirational quotes
@@ -46,60 +47,6 @@ if st.sidebar.button("Start Meditation Timer 🕉️"):
                 st.empty()
 
         # Inspirational quote
-        quote = random.choice(quotes)
-        st.markdown(
-            f"""
-            <h2 style='text-align: center; color: gold;'>✨ Session Complete! ✨</h2>
-            <p style='text-align: center; color: darkgreen; font-size: 20px;'>{quote}</p>
-            """,
-            unsafe_allow_html=True,
-        )
-        # Embed background music
-        st.markdown(
-            f"""
-            <audio controls autoplay>
-              <source src="{music_links[music]}" type="audio/mpeg">
-              Your browser does not support the audio element.
-            </audio>
-            """,
-            unsafe_allow_html=True,
-        )
+        quote = random.ch
 
-        # Step 3: Mood after meditation
-        st.markdown("<h3 style='text-align: center; color: coral;'>How do you feel after meditation?</h3>", unsafe_allow_html=True)
-        after_mood = st.selectbox("Select your mood after meditation:", moods, key="after_mood")
-
-        # Submit results
-        if st.button("Submit Mood Data"):
-            st.markdown(f"<h3 style='text-align: center; color: darkgreen;'>Thank you, {user_name}!</h3>", unsafe_allow_html=True)
-
-            # Analyze mood change
-            if before_mood == after_mood:
-                insight = "Your mood remained stable. Keep meditating for consistent peace. ✨"
-            elif moods.index(after_mood) > moods.index(before_mood):
-                insight = "Your mood improved after meditation! Keep it up! 🌟"
-            else:
-                insight = "Meditation can sometimes highlight feelings. Stay consistent for long-term benefits. 💖"
-
-            st.markdown(f"<h4 style='text-align: center; color: royalblue;'>{insight}</h4>", unsafe_allow_html=True)
-
-            # Store session data
-            session_data = pd.DataFrame({
-                "Name": [user_name],
-                "Before Mood": [before_mood],
-                "After Mood": [after_mood],
-                "Duration (minutes)": [duration],
-                "Music": [music],
-            })
-            st.markdown("<h3 style='text-align: center;'>Your Session Data:</h3>", unsafe_allow_html=True)
-            st.dataframe(session_data)
-
-            # Download session data
-            csv = session_data.to_csv(index=False)
-            st.download_button("Download Session Data", csv, "meditation_session.csv", "text/csv")
-    else:
-        st.markdown("<h3 style='text-align: center; color: red;'>Please enter your name to begin.</h3>", unsafe_allow_html=True)
-
-# Footer
-st.markdown("<h4 style='text-align: center; color: gray;'>💡 Keep meditating and tracking your progress!</h4>", unsafe_allow_html=True)
 
