@@ -1,6 +1,6 @@
 import streamlit as st
 import time
-import random  # Ensure the random module is imported
+import random
 import pandas as pd
 
 # Inspirational quotes
@@ -12,6 +12,15 @@ quotes = [
     "“Smile, breathe, and go slowly.” – Thich Nhat Hanh",
 ]
 
+# Mood suggestions
+suggestions = {
+    "Happy 😊": "Keep doing what you're doing! Share your joy with someone.",
+    "Stressed 😟": "Try deep breathing or a short walk. Relax your shoulders.",
+    "Sad 😢": "Listen to uplifting music or call a loved one.",
+    "Tired 😴": "Take a power nap or have a cup of tea.",
+    "Excited 🤩": "Channel your energy into something creative!",
+}
+
 # Background music options
 music_links = {
     "Nature Sounds 🌿": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
@@ -19,34 +28,87 @@ music_links = {
     "Relaxing Piano 🎹": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
 }
 
-# Mood options
-moods = ["Happy 😊", "Calm 😌", "Stressed 😟", "Sad 😢", "Tired 😴", "Excited 🤩"]
+# Title and subtitle
+st.markdown(
+    "<h1 style='text-align: center; color: darkblue;'>🧘‍♀️ Mindfulness & Mental Health Tracker 🕰️</h1>",
+    unsafe_allow_html=True,
+)
+st.markdown(
+    "<h3 style='text-align: center; color: teal;'>Track your mood and focus on your well-being.</h3>",
+    unsafe_allow_html=True,
+)
 
-# Title
-st.markdown("<h1 style='text-align: center; color: darkblue;'>🧘‍♀️ Meditation Mood Tracker 🕰️</h1>", unsafe_allow_html=True)
-st.markdown("<h3 style='text-align: center; color: teal;'>Track how you feel before and after meditation.</h3>", unsafe_allow_html=True)
+# Collect user name
+user_name = st.text_input("Enter your name to personalize your session:")
 
-# Step 1: User's name and mood before meditation
-st.sidebar.markdown("<h2 style='color: purple;'>Step 1: Enter Your Details</h2>", unsafe_allow_html=True)
-user_name = st.sidebar.text_input("Enter your name:")
-before_mood = st.sidebar.selectbox("How do you feel before meditation?", moods)
-
-# Step 2: Meditation session
-st.sidebar.markdown("<h2 style='color: purple;'>Step 2: Customize Your Session</h2>", unsafe_allow_html=True)
-duration = st.sidebar.slider("Select meditation duration (minutes):", 1, 10, 5)
+# Sidebar for tracking
+st.sidebar.markdown("<h2 style='color: purple;'>Customize Your Session</h2>", unsafe_allow_html=True)
+mood = st.sidebar.selectbox("How are you feeling today?", list(suggestions.keys()))
+duration = st.sidebar.slider("Select mindfulness duration (minutes):", 1, 10, 5)
 music = st.sidebar.selectbox("Choose background music:", list(music_links.keys()))
 
-if st.sidebar.button("Start Meditation Timer 🕉️"):
+# Start mindfulness session
+if st.sidebar.button("Start Mindfulness Timer 🕉️"):
     if user_name.strip():
-        st.markdown(f"<h3 style='text-align: center; color: teal;'>Hello, {user_name}! Your meditation session starts now. 💖</h3>", unsafe_allow_html=True)
+        # Show a soothing animation
+        st.markdown(f"<h3 style='text-align: center; color: teal;'>Hello, {user_name}! Your session starts now. 💖</h3>", unsafe_allow_html=True)
         with st.spinner("Relax and focus..."):
             for i in range(duration * 60, 0, -1):
                 minutes, seconds = divmod(i, 60)
-                st.markdown(f"<h2 style='text-align: center; color: green;'>Time Left: {minutes:02}:{seconds:02}</h2>", unsafe_allow_html=True)
+                st.markdown(
+                    f"<h2 style='text-align: center; color: green;'>Time Left: {minutes:02}:{seconds:02}</h2>",
+                    unsafe_allow_html=True,
+                )
                 time.sleep(1)
-                st.empty()
+                st.empty()  # Clear the previous timer text
 
         # Inspirational quote
-        quote = random.ch
+        quote = random.choice(quotes)
+        st.markdown(
+            f"""
+            <h2 style='text-align: center; color: gold;'>✨ Session Complete! ✨</h2>
+            <p style='text-align: center; color: darkgreen; font-size: 20px;'>{quote}</p>
+            """,
+            unsafe_allow_html=True,
+        )
+        # Embed background music
+        st.markdown(
+            f"""
+            <audio controls autoplay>
+              <source src="{music_links[music]}" type="audio/mpeg">
+              Your browser does not support the audio element.
+            </audio>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        # Display mood suggestions
+        st.markdown(
+            f"<h3 style='text-align: center; color: coral;'>Mood Suggestion:</h3><p style='text-align: center;'>{suggestions[mood]}</p>",
+            unsafe_allow_html=True,
+        )
+
+        # Save session data
+        session_data = pd.DataFrame({
+            "Name": [user_name],
+            "Mood": [mood],
+            "Duration (minutes)": [duration],
+            "Music": [music],
+        })
+        st.markdown("<h3 style='text-align: center;'>Your Session Data:</h3>", unsafe_allow_html=True)
+        st.dataframe(session_data)
+
+        # Option to download session data
+        csv = session_data.to_csv(index=False)
+        st.download_button("Download Session Data", csv, "session_data.csv", "text/csv")
+    else:
+        st.markdown("<h3 style='text-align: center; color: red;'>Please enter your name to begin.</h3>", unsafe_allow_html=True)
+
+# Footer
+st.markdown(
+    "<h4 style='text-align: center; color: gray;'>💡 Take care of your mind, body, and soul!</h4>",
+    unsafe_allow_html=True,
+)
+
 
 
